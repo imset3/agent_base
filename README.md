@@ -55,10 +55,19 @@ Engine: mock / openai / gemini / claude / ollama / lmstudio
 ## 필요한 프로그램
 
 - Python 3.10 이상
-- Node.js 20 이상
-- npm
 
-처음 실행할 때 `frontend/node_modules`가 없으면 `start.py`가 자동으로 `npm install`을 실행합니다.
+Node.js/npm이 설치되어 있지 않아도 됩니다. 처음 실행할 때 `start.py`가 공식 Node.js 배포판을 프로젝트 내부 `.runtime/node` 폴더로 내려받고, 그 안의 `npm`으로 프론트엔드 패키지를 설치합니다.
+
+처음 실행할 때 자동으로 처리되는 일:
+
+```txt
+1. npm 명령어 확인
+2. npm이 없으면 portable Node.js 다운로드
+3. frontend/node_modules가 없으면 npm install 실행
+4. Python backend와 React GUI 실행
+```
+
+인터넷이 막힌 환경에서는 Node.js 다운로드 또는 `npm install`이 실패할 수 있습니다. 그 경우 인터넷 연결을 확인하거나 [Node.js LTS](https://nodejs.org)를 직접 설치한 뒤 다시 실행하세요.
 
 ## 폴더 구조
 
@@ -78,6 +87,7 @@ agent_base/
 ├─ start_mac.sh
 ├─ start_windows.bat
 ├─ .env.example
+├─ .runtime/       # 자동 다운로드된 Node.js, Git 제외
 └─ render.yaml
 ```
 
