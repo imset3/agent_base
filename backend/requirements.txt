@@ -1,0 +1,4 @@
+# Mock mode uses only the Python standard library.
+# Install this file only when you want optional OpenAI support.
+openai>=2.0.0
+
