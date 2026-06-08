@@ -18,6 +18,7 @@ body {
 
 button,
 select,
+input,
 textarea {
   font: inherit;
 }
@@ -36,6 +37,7 @@ button {
 
 .topBar,
 .controlBand,
+.settingsPanel,
 .workspace,
 .demoBand {
   width: min(1180px, 100%);
@@ -156,7 +158,8 @@ p {
   background: #236f6b;
 }
 
-select {
+select,
+input {
   min-height: 38px;
   min-width: 132px;
   padding: 0 10px;
@@ -166,6 +169,20 @@ select {
   background: #ffffff;
 }
 
+.settingsButton {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #d2d9d6;
+  border-radius: 8px;
+  padding: 0 12px;
+  color: #48575b;
+  background: #ffffff;
+  font-weight: 800;
+}
+
 .commandHint {
   margin-left: auto;
   min-height: 38px;
@@ -173,6 +190,83 @@ select {
   border-radius: 8px;
   color: #6f4b13;
   background: #fff3d7;
+}
+
+.settingsPanel {
+  padding: 16px;
+  border: 1px solid #d6ddd9;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.settingsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.settingsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.settingsGrid label {
+  min-width: 0;
+}
+
+.settingsGrid span {
+  display: block;
+  margin-bottom: 6px;
+  color: #48575b;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.settingsGrid input {
+  width: 100%;
+}
+
+.settingsGrid input:disabled {
+  color: #7a878a;
+  background: #f1f4f2;
+}
+
+.checkBox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd7d4;
+  background: #fbfcfa;
+}
+
+.checkBox strong,
+.checkBox span {
+  display: block;
+}
+
+.checkBox span {
+  margin-top: 3px;
+  color: #5d6c70;
+  font-size: 13px;
+}
+
+.checkBox.ready {
+  color: #236f6b;
+  border-color: #b7d5cf;
+  background: #effaf6;
+}
+
+.checkBox.missing,
+.checkBox.error {
+  color: #8a2d1b;
+  border-color: #efb5a8;
+  background: #fff1ed;
 }
 
 .workspace {
@@ -246,6 +340,7 @@ textarea {
 .primaryButton,
 .secondaryButton,
 .ghostButton,
+.settingsButton,
 .demoBand button {
   min-height: 40px;
   display: inline-flex;
@@ -330,7 +425,8 @@ textarea {
   }
 
   .topBar,
-  .controlBand {
+  .controlBand,
+  .settingsHeader {
     align-items: stretch;
     flex-direction: column;
   }
@@ -351,8 +447,13 @@ textarea {
   }
 
   .segmented,
-  select {
+  select,
+  input {
     width: 100%;
+  }
+
+  .settingsGrid {
+    grid-template-columns: 1fr;
   }
 
   .workspace {
@@ -365,4 +466,3 @@ textarea {
     min-height: 280px;
   }
 }
-

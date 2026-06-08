@@ -9,6 +9,7 @@ from pathlib import Path
 from urllib.parse import unquote
 
 from agent.core import AgentCore
+from agent.llm import inspect_provider, provider_status
 from config import DEFAULT_PROVIDER, FRONTEND_DIST_DIR
 
 
@@ -25,18 +26,28 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == "/api/health":
             self._send_json({"ok": True, "provider": DEFAULT_PROVIDER})
             return
+        if self.path == "/api/providers":
+            self._send_json({"providers": provider_status()})
+            return
         self._serve_static()
 
     def do_POST(self) -> None:
-        if self.path != "/api/chat":
-            self._send_json({"error": "Not found"}, 404)
-            return
-
         try:
             payload = self._read_json()
+            if self.path == "/api/providers/check":
+                provider = str(payload.get("provider", "mock"))
+                settings = payload.get("settings") if isinstance(payload.get("settings"), dict) else {}
+                self._send_json(inspect_provider(provider, settings))
+                return
+
+            if self.path != "/api/chat":
+                self._send_json({"error": "Not found"}, 404)
+                return
+
             message = str(payload.get("message", ""))
             provider = payload.get("provider")
-            response = agent.respond(message, provider)
+            settings = payload.get("settings") if isinstance(payload.get("settings"), dict) else {}
+            response = agent.respond(message, provider, settings)
             self._send_json(
                 {
                     "answer": response.answer,

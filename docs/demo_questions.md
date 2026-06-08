@@ -1,23 +1,21 @@
 # Demo Questions
 
-## 1. 콜론 누락
+## 1. 기본 인사
 
-```python
-if score >= 60
-    print("pass")
+```txt
+안녕, 너는 어떤 챗봇 베이스야?
 ```
 
-## 2. 들여쓰기 오류
+## 2. 코드 질문
 
-```python
-for i in range(3):
-print(i)
+```txt
+React에서 설정창을 단순하게 만드는 방법을 알려줘.
 ```
 
-## 3. 괄호 누락
+## 3. Provider 질문
 
-```python
-print("hello"
+```txt
+OpenAI와 Ollama 연결 방식의 차이를 짧게 설명해줘.
 ```
 
 ## 4. 명령어 확인
@@ -29,6 +27,5 @@ print("hello"
 ## 5. 메모 저장
 
 ```txt
-/note if문 끝에는 콜론을 붙인다.
+/note 오늘은 Provider 설정 패널과 Mock 파이프라인을 확인했다.
 ```
-

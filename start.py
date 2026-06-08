@@ -14,7 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 BACKEND_DIR = ROOT / "backend"
 FRONTEND_DIR = ROOT / "frontend"
-PROVIDERS = ("mock", "openai", "ollama")
+PROVIDERS = ("mock", "openai", "gemini", "claude", "ollama", "lmstudio")
 OS_OPTIONS = ("windows", "macos", "other")
 
 
@@ -130,4 +130,3 @@ def stop_process(process: subprocess.Popen) -> None:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

@@ -1,8 +1,8 @@
 # agent_base
 
-`agent_base`는 Windows와 macOS에서 실행 가능한 Mock 기반 Python Agent + React GUI 템플릿입니다.
+`agent_base`는 Windows와 macOS에서 실행 가능한 간단 챗봇 베이스입니다.
 
-기본 주제는 **Python 문법 오류 설명 Agent**입니다. Mock 모드에서는 API 키 없이 로컬 규칙으로 문법 오류를 분석하고, 필요하면 OpenAI 또는 Ollama 엔진으로 확장할 수 있습니다.
+기본 Mock 모드는 API 키 없이 동작합니다. 설정 창에서 OpenAI, Gemini, Claude, Ollama, LM Studio로 Provider를 바꿔 연결 파이프라인을 확인할 수 있습니다.
 
 ## 빠른 실행
 
@@ -47,7 +47,7 @@ http://127.0.0.1:5173
 
 ```txt
 OS: windows / macos / other
-Engine: mock / openai / ollama
+Engine: mock / openai / gemini / claude / ollama / lmstudio
 ```
 
 기본값은 현재 OS 자동 감지와 `mock` 엔진입니다.
@@ -81,6 +81,19 @@ agent_base/
 └─ render.yaml
 ```
 
+## GUI 설정 창
+
+상단 `Settings` 버튼을 누르면 현재 Provider의 최소 설정만 입력할 수 있습니다.
+
+```txt
+Model
+Base URL
+API Key
+Anthropic Version(Claude만)
+```
+
+입력한 API Key는 브라우저 저장소나 파일에 저장하지 않고, 현재 요청에만 사용합니다. `Check` 버튼은 모델명, URL, API Key 필요 여부를 점검합니다.
+
 ## API
 
 ```txt
@@ -92,9 +105,21 @@ POST /api/chat
 
 ```json
 {
-  "message": "if score >= 60\n    print(\"pass\")",
-  "provider": "mock"
+  "message": "안녕, 너는 어떤 챗봇 베이스야?",
+  "provider": "mock",
+  "settings": {
+    "model": "",
+    "baseUrl": "",
+    "apiKey": ""
+  }
 }
+```
+
+Provider 설정 점검:
+
+```txt
+POST /api/providers/check
+GET  /api/providers
 ```
 
 ## Agent 명령어
@@ -105,7 +130,7 @@ GUI 입력창 또는 API 메시지에 아래 명령어를 넣을 수 있습니�
 /help
 /clear
 /note 오늘 배운 내용
-/read backend/docs/knowledge/python_syntax.md
+/read backend/docs/knowledge/chatbot_base.md
 /files backend/docs/knowledge
 ```
 
@@ -117,11 +142,47 @@ API 키 없이 실행됩니다. `ast.parse` 기반으로 Python 문법 오류를
 
 ### openai
 
-`.env` 또는 환경변수에 `OPENAI_API_KEY`를 설정한 뒤 실행합니다. 선택 기능입니다.
+OpenAI Chat Completions 호환 경로를 사용합니다.
+
+```txt
+POST https://api.openai.com/v1/chat/completions
+```
+
+`.env` 또는 설정 창에 API Key를 입력합니다.
+
+### gemini
+
+Google Gemini `generateContent` REST 경로를 사용합니다.
+
+```txt
+POST https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent
+```
+
+### claude
+
+Anthropic Messages API 경로를 사용합니다.
+
+```txt
+POST https://api.anthropic.com/v1/messages
+```
+
+`x-api-key`와 `anthropic-version` 헤더가 필요합니다.
 
 ### ollama
 
-Ollama가 로컬에서 실행 중이어야 합니다. 기본 모델명은 `llama3.2`입니다.
+Ollama가 로컬에서 실행 중이어야 합니다.
+
+```txt
+POST http://localhost:11434/api/chat
+```
+
+### lmstudio
+
+LM Studio의 OpenAI-compatible local server를 사용합니다.
+
+```txt
+POST http://localhost:1234/v1/chat/completions
+```
 
 ## 배포
 
@@ -132,4 +193,3 @@ Ollama가 로컬에서 실행 중이어야 합니다. 기본 모델명은 `llama
 - `.env`는 GitHub에 올리지 않습니다.
 - 파일 읽기 Tool은 프로젝트 밖 경로, 숨김 파일, `.env`, `.git`, `node_modules` 접근을 차단합니다.
 - Retriever는 `backend/docs/knowledge` 안의 Markdown 문서만 참고합니다.
-
